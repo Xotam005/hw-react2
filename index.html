@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+    
+    <script type="text/babel">
+        function App() {
+            let [player, setPlayer] = React.useState('')
+            let [game, setGame] = React.useState('')
+            
+
+            let [all, setAll] = React.useState({
+                cs: ['one', 'two'],
+                dota: ['three', 'four'],
+                pubg: ['five', 'six'],
+            })
+
+            const addPlayer = (event) => {
+    event.preventDefault();
+    if (player.length > 2 && game) {
+        let copyAll = { ...all };
+
+        let exists = Object.values(copyAll).some((arr) => arr.includes(player));
+
+        if (!exists) {
+            copyAll[game] = [...all[game], player];
+            setAll(copyAll);
+            setPlayer('');
+            setGame('');
+        } else {
+            alert('This player already exists!');
+        }
+    }
+};
+       
+            return (
+                <div className="wrapper">
+                   <form onSubmit={(event) => addPlayer(event)}>
+                        <input 
+                            type="text" 
+                            placeholder="Введите игрока"
+                            value={player}
+                            onChange={(event) => setPlayer(event.target.value)}
+                        />
+                        <select 
+                            value={game}
+                            onChange={(event) => setGame(event.target.value)}
+                        >
+                            <option>Выберите игру</option>    
+                            <option>dota</option>    
+                            <option>cs</option>    
+                            <option>pubg</option>        
+                        </select>
+                        <button>add</button>
+                    </form>
+                    <div className="list">
+                        <li>
+                            <h2>Dota players</h2>
+                            {all.dota.map((el,i) => (
+                                <p key={i}>{el}</p>
+                            ))}
+                        </li>
+                        <li>
+                            <h2>Cs players</h2>
+                            {all.cs.map((el,i) => (
+                                <p key={i}>{el}</p>
+                            ))}
+                        </li>
+                        <li>
+                            <h2>Pubg players</h2>
+                            {all.pubg.map((el,i) => (
+                                <p key={i}>{el}</p>
+                            ))}
+                        </li>
+                    </div>
+                </div>
+            )
+        }
+        const app = document.getElementById('root')
+        const root = ReactDOM.createRoot(app)
+        root.render(<App/>)
+       
+    </script>
+</body>
+</html>
